@@ -12,18 +12,6 @@ export class PersonListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.people.set('Ben', true);
-    this.people.set('Jacob', true);
-    this.people.set('1', true);
-    this.people.set('2', true);
-    this.people.set('3', true);
-    this.people.set('4', true);
-    this.people.set('5', true);
-    this.people.set('6', true);
-    this.people.set('7', true);
-    this.people.set('8', true);
-    this.people.set('9', true);
-    this.people.set('0', true);
   }
 
   add(person: any): void {
