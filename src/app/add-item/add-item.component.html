@@ -1,0 +1,35 @@
+<div class="container">
+  <!-- Title -->
+  <div id="title" class="content">
+    <h2>Item Details</h2>
+  </div>
+
+  <!-- Inputs -->
+  <div id="nameInput" class="content">
+    <mat-form-field appearance="fill" class="input">
+      <mat-label>Item Name</mat-label>
+      <input #name matInput>
+    </mat-form-field>
+  </div>
+  <div id="priceInput" class="content">
+    <mat-form-field appearance="fill" class="input">
+      <mat-label>Price</mat-label>
+      <span matPrefix>$ &nbsp;</span>
+      <input #price matInput type="number">
+    </mat-form-field>
+  </div>
+  <div id="personSelection" class="content">
+    <mat-form-field appearance="fill" class="input">
+      <mat-label>Party Member</mat-label>
+      <mat-select #person>
+        <mat-option *ngFor="let person of personNames" [value]="person">
+          {{ person }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div id="submit" class="footer content">
+    <button routerLink="/items" mat-flat-button color="primary" class="submit-button" isRounded="false" style="border-radius: 0px;" (click)="add(name.value, price.value, person.value)">Submit</button>
+  </div>
+</div>
