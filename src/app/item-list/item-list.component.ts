@@ -18,7 +18,10 @@ export class ItemListComponent extends BaseComponent implements OnInit {
     return Array.from(this.items.values());
   }
 
-  remove(item: string): void {
-    this.items.delete(item);
+  remove(item: Item): void {
+    this.items.delete(item.name);
+    item.people.forEach(person => {
+      this.people.get(person)?.items.delete(item.name);
+    });
   }
 }

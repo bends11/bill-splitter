@@ -22,6 +22,7 @@ export class AddItemComponent extends BaseComponent implements OnInit {
     const item: Item = {
       name: name,
       price: parseFloat(price),
+      people: [ person ],
     }
     this.items.set(name, item);
     this.people.get(person)?.items.set(name, item);
