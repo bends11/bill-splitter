@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { PersonListComponent } from './person-list/person-list.component';
@@ -15,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ItemListComponent } from './item-list/item-list.component';
 import { BaseComponent } from './base/base.component';
 import { AddItemComponent } from './add-item/add-item.component';
+import { SummaryComponent } from './summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { AddItemComponent } from './add-item/add-item.component';
     ItemListComponent,
     BaseComponent,
     AddItemComponent,
+    SummaryComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +38,7 @@ import { AddItemComponent } from './add-item/add-item.component';
     MatIconModule,
     AppRoutingModule,
     MatSelectModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
