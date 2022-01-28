@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Item } from './item.service';
 
 export interface Person {
   name: string,
-  items: Map<string, Item>,
+  purchases: Map<string, Purchase>,
+}
+
+export interface Purchase {
+  name: string,
+  price: number,
+  quantity: number,
 }
 
 @Injectable({
