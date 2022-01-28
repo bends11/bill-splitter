@@ -4,20 +4,35 @@
     <h2>Item Details</h2>
   </div>
 
-  <!-- Inputs -->
+  <!-- Name -->
   <div id="nameInput" class="content">
     <mat-form-field appearance="fill" class="input">
       <mat-label>Item Name</mat-label>
       <input #name matInput>
     </mat-form-field>
   </div>
+  <!-- Price -->
   <div id="priceInput" class="content">
     <mat-form-field appearance="fill" class="input">
       <mat-label>Price</mat-label>
       <span matPrefix>$ &nbsp;</span>
-      <input #price matInput type="number">
+      <input #price matInput type="number" min="0">
     </mat-form-field>
   </div>
+  <!-- Split -->
+  <div class="content">
+    <div id="splitInput" class="checkbox">
+      <mat-checkbox class="example-margin" color="primary" (change)="setSplit($event.checked)">Split Item</mat-checkbox>
+    </div>
+  </div>
+  <!-- Quantity -->
+  <!-- <div id="splitNumberInput" class="content" *ngIf="split">
+    <mat-form-field appearance="fill" class="input">
+      <mat-label>Shares</mat-label>
+      <input #quantity matInput type="number" min="1" (change)="setShareNum(quantity.value)">
+    </mat-form-field>
+  </div> -->
+  <!-- Person -->
   <div id="personSelection" class="content">
     <mat-form-field appearance="fill" class="input">
       <mat-label>Party Member</mat-label>
@@ -27,6 +42,29 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </div>
+  <div class="content" [ngClass]="{ 'hide': !split }">
+    <mat-form-field appearance="fill" class="input">
+      <mat-label>Shares</mat-label>
+      <input #shareQuantity matInput type="number">
+    </mat-form-field>
+  </div>
+  <div class="content" [ngClass]="{ 'hide': !split }">
+    <button mat-raised-button color="primary" (click)="addShare(person, shareQuantity)">Add Party Member</button>
+  </div>
+
+  <!-- Share List -->
+  <div id="list" class="content">
+    <mat-list>
+      <mat-list-item *ngFor="let share of shareList" class="share-list-item">
+        <mat-card class="share-list-item-card">
+          <mat-card-content class="share-list-item-content share-name">{{ share.name }}: {{ share.quantity }}</mat-card-content>
+          <button class="share-list-item-content remove-button" mat-button (click)="removeShare(share.name)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card>
+      </mat-list-item>
+    </mat-list>
   </div>
 
   <div id="submit" class="footer content">

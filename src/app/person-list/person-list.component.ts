@@ -19,7 +19,7 @@ export class PersonListComponent extends BaseComponent implements OnInit {
   }
 
   add(person: any): void {
-    this.people.set(person.value, { name: person.value, items: new Map() });
+    this.people.set(person.value, { name: person.value, purchases: new Map() });
     person.value = '';
   }
 

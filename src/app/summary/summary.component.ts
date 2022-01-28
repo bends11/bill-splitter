@@ -42,8 +42,8 @@ export class SummaryComponent extends BaseComponent implements OnInit {
 
   calculateSubTotal(person: Person): number {
     let sub = 0;
-    person.items.forEach(item => {
-      sub += item.price;
+    person.purchases.forEach(purchase => {
+      sub += purchase.price;
     });
     return sub;
   }
