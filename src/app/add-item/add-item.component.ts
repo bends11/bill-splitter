@@ -32,7 +32,7 @@ export class AddItemComponent extends BaseComponent implements OnInit {
   }
 
   add(name: string, priceString: string, person: string): void {
-    const price: number = parseInt(priceString);
+    const price: number = parseFloat(priceString);
     let people: string[];
     let quantity: number = 0;
 
