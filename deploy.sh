@@ -1,8 +1,14 @@
 #!/usr/bin/bash
 
-aws s3 rm s3://bill-splitter.sweeney-project.com/backup --recursive
-aws s3 cp s3://bill-splitter.sweeney-project.com s3://bill-splitter.sweeney-project.com/backup --recursive --exclude="backup/*" --exclude="bill-splitter/*"
-aws s3 cp ./dist/ s3://bill-splitter.sweeney-project.com/ --recursive
-aws s3 rm s3://bill-splitter.sweeney-project.com --recursive --exclude="backup/*" --exclude="bill-splitter/*"
-aws s3 cp s3://bill-splitter.sweeney-project.com/bill-splitter s3://bill-splitter.sweeney-project.com --recursive
-aws s3 rm s3://bill-splitter.sweeney-project.com/bill-splitter --recursive
+project=bill-splitter
+bucket="s3://$project.sweeney-project.com"
+backup=backup
+exclusions="--exclude=$backup/* --exclude=$project/*"
+
+
+aws s3 rm "$bucket/$backup" --recursive
+aws s3 cp $bucket "$bucket/$backup" --recursive $exclusions
+aws s3 cp ./dist/ $bucket --recursive
+aws s3 rm $bucket --recursive $exclusions
+aws s3 cp "$bucket/$project" $bucket --recursive
+aws s3 rm "$bucket/$project" --recursive
