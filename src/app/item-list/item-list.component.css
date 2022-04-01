@@ -1,0 +1,46 @@
+.container {
+  margin-top: 1em;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  margin-left: 1em;
+  margin-top: 0.5em;
+}
+
+.item-list-item {
+  margin-bottom: 1em;
+}
+
+.item-list-item-card {
+  width: 20em;
+  height: 1.5em;
+}
+
+.item-list-item-content {
+  display: inline-flex;
+}
+
+.remove-button {
+  float: right;
+}
+
+.item-name {
+  font-size: large;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  min-height: 4em;
+  bottom: 0px;
+}
+
+.submit-button {
+  width: 100%;
+  font-size: xx-large;
+}

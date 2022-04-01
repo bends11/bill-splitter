@@ -1,0 +1,59 @@
+.container {
+  margin-top: 1em;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.vertical-content {
+  justify-content: center;
+}
+
+.checkbox {
+  width: 20em;
+  margin-bottom: 1em;
+}
+
+.input {
+  width: 20em;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  min-height: 4em;
+  bottom: 0px;
+}
+
+.submit-button {
+  width: 100%;
+  font-size: xx-large;
+}
+
+
+.hide {
+  display: none;
+}
+
+.share-list-item {
+  margin-bottom: 1em;
+}
+
+.share-list-item-card {
+  width: 20em;
+  height: 1.5em;
+}
+
+.share-list-item-content {
+  display: inline-flex;
+}
+
+.remove-button {
+  float: right;
+}
+
+.share-name {
+  font-size: x-large;
+}

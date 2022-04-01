@@ -1,0 +1,50 @@
+.container {
+  margin-top: 1em;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.person-input {
+  width: 20em;
+  font-size: large;
+}
+
+.add-button {
+  margin-bottom: 0.5em;
+}
+
+.person-list-item {
+  margin-bottom: 1em;
+}
+
+.person-list-item-card {
+  width: 20em;
+  height: 1.5em;
+}
+
+.person-list-item-content {
+  display: inline-flex;
+}
+
+.remove-button {
+  float: right;
+}
+
+.person-name {
+  font-size: x-large;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  min-height: 4em;
+  bottom: 0px;
+}
+
+.submit-button {
+  width: 100%;
+  font-size: xx-large;
+}

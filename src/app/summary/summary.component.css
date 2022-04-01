@@ -1,0 +1,47 @@
+.container {
+  margin-top: 1em;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  margin-left: 1em;
+  margin-top: 0.5em;
+}
+
+.person-list-item {
+  margin-bottom: 1em;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  min-height: 4em;
+  bottom: 0px;
+}
+
+.submit-button {
+  width: 100%;
+  font-size: xx-large;
+}
+
+
+table {
+  width: 90%;
+  table-layout: fixed;
+}
+
+td {
+  font-size: large;
+}
+
+.input {
+  width: 90%;
+}
+
+#subtotal {
+  margin-bottom: 1em;
+}
