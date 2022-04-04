@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../base/base.component';
 import { ItemService } from '../services/item.service';
-import { Person, PersonService } from '../services/person.service';
+import { Person, PersonService, Purchase } from '../services/person.service';
 
 @Component({
   selector: 'app-summary',
@@ -10,7 +10,8 @@ import { Person, PersonService } from '../services/person.service';
 })
 export class SummaryComponent extends BaseComponent implements OnInit {
 
-  displayedColumns: string[] = [ 'name', 'subtotal', 'total' ];
+  displayedColumns: string[] = [ 'purchases' ];
+  displayedPurchaseColumns: string[] = [ 'name', 'total' ];
 
   total: number = 0;
   isCalculated: boolean = false;
@@ -21,6 +22,15 @@ export class SummaryComponent extends BaseComponent implements OnInit {
 
   get peopleList(): Person[] {
     return Array.from(this.people.values());
+  }
+
+  getPurchases(personName: string): Purchase[] {
+    const list: Purchase[] = [];
+    const person: Person | undefined = this.people.get(personName);
+
+    person?.purchases.forEach((purchase: Purchase) => list.push(purchase));
+
+    return list;
   }
 
   get subtotal() {
