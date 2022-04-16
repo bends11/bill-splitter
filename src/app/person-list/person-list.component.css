@@ -34,6 +34,11 @@
   float: right;
 }
 
+.card-button-icon {
+  height: 50px;
+  width: 50px;
+}
+
 .person-name {
   font-size: x-large;
 }

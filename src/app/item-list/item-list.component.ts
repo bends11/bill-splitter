@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { share } from 'rxjs';
 import { BaseComponent } from '../base/base.component';
 import { Item, ItemService } from '../services/item.service';
 import { PersonService } from '../services/person.service';
@@ -10,8 +12,8 @@ import { PersonService } from '../services/person.service';
 })
 export class ItemListComponent extends BaseComponent implements OnInit {
 
-  constructor(personService: PersonService, itemService: ItemService) {
-    super(personService, itemService)
+  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
+    super(personService, itemService, route)
   }
 
   get itemList(): Item[] {

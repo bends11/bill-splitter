@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { ItemService } from '../services/item.service';
 import { Person, PersonService, Purchase } from '../services/person.service';
@@ -16,8 +17,8 @@ export class SummaryComponent extends BaseComponent implements OnInit {
   total: number = 0;
   isCalculated: boolean = false;
 
-  constructor(personService: PersonService, itemService: ItemService) {
-    super(personService, itemService);
+  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
+    super(personService, itemService, route);
   }
 
   get peopleList(): Person[] {

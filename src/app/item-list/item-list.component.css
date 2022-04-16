@@ -26,8 +26,13 @@
   display: inline-flex;
 }
 
-.remove-button {
+.card-button {
   float: right;
+}
+
+.card-button-icon {
+  height: 50px;
+  width: 50px;
 }
 
 .item-name {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Item, ItemService } from '../services/item.service';
 import { PersonService, Person } from '../services/person.service';
 
@@ -14,7 +15,7 @@ export class BaseComponent implements OnInit {
   protected people: Map<string, Person> = new Map();
   protected items: Map<string, Item> = new Map();
 
-  constructor(private peopleService: PersonService, private itemService: ItemService) { }
+  constructor(private peopleService: PersonService, private itemService: ItemService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.peopleService.people$.subscribe(
@@ -30,6 +31,10 @@ export class BaseComponent implements OnInit {
     )
 
     this.loaded = true;
+  }
+
+  getRouteParam(param: string): string {
+    return this.route.snapshot.paramMap.get(param) || '';
   }
 
 }
