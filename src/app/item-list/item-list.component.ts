@@ -26,16 +26,4 @@ export class ItemListComponent extends BaseComponent implements OnInit {
       this.people.get(person)?.purchases.delete(item.name);
     });
   }
-
-  editItem(name: string) {
-    const item: Item | undefined = this.items.get(name);
-    if (item) {
-      // this.person = share.name;
-      // this.quantity = share.quantity.toString();
-      // setTimeout(() => {
-      //   this.shareInput.nativeElement.focus();
-      //   this.shareInput.nativeElement.select();
-      // });
-    }
-  }
 }
