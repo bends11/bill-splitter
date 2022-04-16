@@ -38,6 +38,10 @@
   display: none;
 }
 
+#list {
+  margin-top: 20px;
+}
+
 .share-list-item {
   margin-bottom: 1em;
 }
@@ -51,8 +55,13 @@
   display: inline-flex;
 }
 
-.remove-button {
+.card-button {
   float: right;
+}
+
+.card-button-icon {
+  height: 50px;
+  width: 50px;
 }
 
 .share-name {
