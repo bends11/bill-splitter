@@ -46,16 +46,25 @@ export class AddItemComponent extends BaseComponent implements OnInit {
         this.price = item.price.toString();
         this.split = item.people.length > 1;
         if (this.split) {
-          item.people.forEach((person: string) => {
-            console.log(this.people);
-            this.shares.set(person, {
-              name: person,
-              quantity: this.people.get(person)?.purchases.get(this.name)?.quantity || 0,
-            });
+          item.people.forEach((personName: string) => {
+            const person: Person | undefined = this.people.get(personName)
+
+            if (person) {
+              this.shares.set(personName, {
+                name: personName,
+                quantity: person.purchases.get(this.name)?.quantity || 0,
+              });
+
+              person.purchases.delete(this.name);
+            }
           });
         } else {
           this.person = item.people[0];
+
+          this.people.get(this.person)?.purchases.delete(this.name);
         }
+
+        this.items.delete(this.name);
       }
   }
 
