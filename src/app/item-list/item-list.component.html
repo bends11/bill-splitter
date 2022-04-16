@@ -11,8 +11,11 @@
       <mat-list-item *ngFor="let item of itemList" class="item-list-item">
         <mat-card class="item-list-item-card">
           <mat-card-content class="item-list-item-content item-name">{{ item.name }}: {{ item.price | currency : 'USD' }}</mat-card-content>
-          <button class="item-list-item-content remove-button" mat-button (click)="remove(item)">
-            <mat-icon>close</mat-icon>
+          <button class="item-list-item-content card-button" mat-button (click)="remove(item)">
+            <mat-icon class="card-button-icon">close</mat-icon>
+          </button>
+          <button [routerLink]="['/add-item', item.name]" mat-icon-button class="item-list-item-content card-button" mat-button>
+            <mat-icon class="card-button-icon">edit</mat-icon>
           </button>
         </mat-card>
       </mat-list-item>

@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { Item, ItemService } from '../services/item.service';
-import { PersonService, Purchase } from '../services/person.service';
+import { Person, PersonService, Purchase } from '../services/person.service';
 
 interface Share {
   name: string,
@@ -24,8 +25,8 @@ export class AddItemComponent extends BaseComponent implements OnInit {
 
   @ViewChild('shareInput') shareInput!: ElementRef;
 
-  constructor(personService: PersonService, itemService: ItemService) {
-    super(personService, itemService)
+  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
+    super(personService, itemService, route);
   }
 
   get personNames(): string[] {
@@ -34,6 +35,28 @@ export class AddItemComponent extends BaseComponent implements OnInit {
 
   get shareList(): Share[] {
     return Array.from(this.shares.values());
+  }
+
+  override ngOnInit(): void {
+      super.ngOnInit();
+
+      this.name = this.getRouteParam('name');
+      const item: Item | undefined = this.items.get(this.name);
+      if (item) {
+        this.price = item.price.toString();
+        this.split = item.people.length > 1;
+        if (this.split) {
+          item.people.forEach((person: string) => {
+            console.log(this.people);
+            this.shares.set(person, {
+              name: person,
+              quantity: this.people.get(person)?.purchases.get(this.name)?.quantity || 0,
+            });
+          });
+        } else {
+          this.person = item.people[0];
+        }
+      }
   }
 
   add(): void {
