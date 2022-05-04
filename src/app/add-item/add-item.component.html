@@ -23,6 +23,7 @@
   <div class="content">
     <div id="splitInput" class="checkbox">
       <mat-checkbox [(ngModel)]="split" class="example-margin" color="primary" tabindex="3" [disabled]="shareList.length > 0">Split Item</mat-checkbox>
+      <button mat-raised-button color="primary" (click)="splitEvenly()" class="split-evenly">Split Evenly</button>
     </div>
   </div>
   <!-- Person -->

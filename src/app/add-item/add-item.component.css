@@ -17,6 +17,10 @@
   margin-bottom: 1em;
 }
 
+.split-evenly {
+  margin-left: 1em;
+}
+
 .input {
   width: 20em;
 }

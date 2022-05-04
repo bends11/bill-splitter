@@ -120,6 +120,13 @@ export class AddItemComponent extends BaseComponent implements OnInit {
     this.quantity = '';
   }
 
+  splitEvenly() {
+    this.split = true;
+    this.personNames.forEach((person) => {
+      this.shares.set(person, { name: person, quantity: 1 });
+    })
+  }
+
   editShare(name: string) {
     const share: Share | undefined = this.shares.get(name);
     if (share) {
