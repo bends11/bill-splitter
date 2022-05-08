@@ -3,14 +3,30 @@
   <div id="title" class="content">
     <h2>Add Items</h2>
     <button [routerLink]="['/add-item', '']" matSuffix mat-fab color="primary" class="add-button"><mat-icon>add</mat-icon></button>
+    <input type="file" style="display: none;" (change)="onImageSelected($event)" #imageInput>
+    <button matSuffix mat-fab color="primary" class="add-button" (click)="imageInput.click()"><mat-icon>image</mat-icon></button>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="content" *ngIf="isProcessingImage">
+    <p>Processing Image . . .</p>
+  </div>
+  <div class="content" *ngIf="isProcessingImage">
+    <mat-progress-bar
+      mode="buffer"
+      color="primary"
+      [value]="imageProcessProgress"
+      [bufferValue]="0"
+      class="progress-bar">
+    </mat-progress-bar>
   </div>
 
   <!-- Item List -->
   <div id="list" class="content">
     <mat-list>
       <mat-list-item *ngFor="let item of itemList" class="item-list-item">
-        <mat-card class="item-list-item-card">
-          <mat-card-content class="item-list-item-content item-name">{{ item.name }}: {{ item.price | currency : 'USD' }}</mat-card-content>
+        <mat-card class="item-list-item-card" [ngClass]="{ 'incomplete-item': item.people.length === 0 }">
+          <mat-card-content class="item-list-item-content item-name">{{ getLimitedName(item.name, item.price) }}: {{ item.price | currency : 'USD' }}</mat-card-content>
           <button class="item-list-item-content card-button" mat-button (click)="remove(item)">
             <mat-icon class="card-button-icon">close</mat-icon>
           </button>
