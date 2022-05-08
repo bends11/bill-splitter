@@ -10,11 +10,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
-<<<<<<< Updated upstream
-=======
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
->>>>>>> Stashed changes
 
 import { AppComponent } from './app.component';
 import { PersonListComponent } from './person-list/person-list.component';
@@ -48,11 +45,8 @@ import { SummaryComponent } from './summary/summary.component';
     MatTableModule,
     MatCheckboxModule,
     FormsModule,
-<<<<<<< Updated upstream
-=======
     MatProgressBarModule,
     ClipboardModule,
->>>>>>> Stashed changes
   ],
   providers: [],
   bootstrap: [AppComponent]
