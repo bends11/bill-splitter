@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { ItemService } from '../services/item.service';
 import { PersonService } from '../services/person.service';
@@ -10,8 +11,8 @@ import { PersonService } from '../services/person.service';
 })
 export class PersonListComponent extends BaseComponent implements OnInit {
 
-  constructor(personService: PersonService, itemService: ItemService) {
-    super(personService, itemService)
+  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
+    super(personService, itemService, route);
   }
 
   get personNames(): string[] {

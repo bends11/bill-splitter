@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { Item, ItemService } from '../services/item.service';
-import { PersonService, Purchase } from '../services/person.service';
+import { Person, PersonService, Purchase } from '../services/person.service';
 
 interface Share {
   name: string,
@@ -16,11 +17,16 @@ interface Share {
 export class AddItemComponent extends BaseComponent implements OnInit {
 
   split: boolean = false;
-  private shareNum: number = 1;
+  name: string = '';
+  price: string = '';
+  person: string = '';
+  quantity: string = '';
   private shares: Map<string, Share> = new Map();
 
-  constructor(personService: PersonService, itemService: ItemService) {
-    super(personService, itemService)
+  @ViewChild('shareInput') shareInput!: ElementRef;
+
+  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
+    super(personService, itemService, route);
   }
 
   get personNames(): string[] {
@@ -31,8 +37,39 @@ export class AddItemComponent extends BaseComponent implements OnInit {
     return Array.from(this.shares.values());
   }
 
-  add(name: string, priceString: string, person: string): void {
-    const price: number = parseFloat(priceString);
+  override ngOnInit(): void {
+      super.ngOnInit();
+
+      this.name = this.getRouteParam('name');
+      const item: Item | undefined = this.items.get(this.name);
+      if (item) {
+        this.price = item.price.toString();
+        this.split = item.people.length > 1;
+        if (this.split) {
+          item.people.forEach((personName: string) => {
+            const person: Person | undefined = this.people.get(personName)
+
+            if (person) {
+              this.shares.set(personName, {
+                name: personName,
+                quantity: person.purchases.get(this.name)?.quantity || 0,
+              });
+
+              person.purchases.delete(this.name);
+            }
+          });
+        } else {
+          this.person = item.people[0];
+
+          this.people.get(this.person)?.purchases.delete(this.name);
+        }
+
+        this.items.delete(this.name);
+      }
+  }
+
+  add(): void {
+    const price: number = parseFloat(this.price);
     let people: string[];
     let quantity: number = 0;
 
@@ -45,54 +82,61 @@ export class AddItemComponent extends BaseComponent implements OnInit {
 
       Array.from(this.shares.values()).forEach(share => {
         const purchase: Purchase = {
-          name: name,
+          name: this.name,
           price: price * (share.quantity / quantity),
           quantity: share.quantity,
         }
 
-        this.people.get(share.name)?.purchases.set(name, purchase)
+        this.people.get(share.name)?.purchases.set(this.name, purchase)
       });
     }
     else {
-      people = [ person ];
+      people = [ this.person ];
       quantity = 1;
 
       const purchase: Purchase = {
-        name: name,
+        name: this.name,
         price: price,
         quantity: quantity,
       }
-      this.people.get(person)?.purchases.set(name, purchase);
+      this.people.get(this.person)?.purchases.set(this.name, purchase);
     }
     const item: Item = {
-      name: name,
+      name: this.name,
       price: price,
       people: people,
       quantity: quantity,
     }
-    this.items.set(name, item);
+    this.items.set(this.name, item);
+
+    console.log(this.shareInput);
+
+    setTimeout(() => this.shareInput.nativeElement.blur());
   }
 
-  setSplit(split: boolean) {
-    this.split = split;
+  addShare() {
+    this.shares.set(this.person, { name: this.person, quantity: parseInt(this.quantity) || 1 });
+    this.person = '';
+    this.quantity = '';
   }
 
-  setShareNum(quantity: string) {
-    this.shareNum = parseInt(quantity);
+  splitEvenly() {
+    this.split = true;
+    this.personNames.forEach((person) => {
+      this.shares.set(person, { name: person, quantity: 1 });
+    })
   }
 
-  getMax(): number {
-    let sharesUsed: number = 0;
-    this.shareList.forEach(share => {
-      sharesUsed += share.quantity;
-    });
-    return this.shareNum - sharesUsed;
-  }
-
-  addShare(shareName: any, shareQuantity: any) {
-    this.shares.set(shareName.value, { name: shareName.value, quantity: parseInt(shareQuantity.value) });
-    shareName.value = '';
-    shareQuantity.value = '';
+  editShare(name: string) {
+    const share: Share | undefined = this.shares.get(name);
+    if (share) {
+      this.person = share.name;
+      this.quantity = share.quantity.toString();
+      setTimeout(() => {
+        this.shareInput.nativeElement.focus();
+        this.shareInput.nativeElement.select();
+      });
+    }
   }
 
   removeShare(name: string) {
