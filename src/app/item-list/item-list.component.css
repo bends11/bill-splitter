@@ -13,8 +13,16 @@
   margin-top: 0.5em;
 }
 
+.progress-bar {
+  width: 20em;
+}
+
 .item-list-item {
   margin-bottom: 1em;
+}
+
+.incomplete-item {
+  background-color: red;
 }
 
 .item-list-item-card {
@@ -28,6 +36,7 @@
 
 .card-button {
   float: right;
+  padding: 0px;
 }
 
 .card-button-icon {
@@ -36,7 +45,7 @@
 }
 
 .item-name {
-  font-size: large;
+  font-size: small;
 }
 
 .footer {

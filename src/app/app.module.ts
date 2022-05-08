@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { PersonListComponent } from './person-list/person-list.component';
@@ -43,6 +44,7 @@ import { SummaryComponent } from './summary/summary.component';
     MatTableModule,
     MatCheckboxModule,
     FormsModule,
+    MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
