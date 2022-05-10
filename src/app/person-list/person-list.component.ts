@@ -36,7 +36,7 @@ export class PersonListComponent extends BaseComponent implements OnInit {
   }
 
   get unselectedSavedPeople(): string[] {
-    return this.savedPeople.filter((person: string) => !this.personNames.includes(person));
+    return this.savedPeople.filter((person: string) => !this.personNames.includes(person)).sort();
   }
 
   private getSavedPeople(): Set<string> {
