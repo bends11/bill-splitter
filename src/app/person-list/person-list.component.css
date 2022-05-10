@@ -17,7 +17,7 @@
   margin-bottom: 0.5em;
 }
 
-::ng-deep .cdk-overlay-pane {
+::ng-deep .mat-autocomplete-panel {
   max-height: 150px !important;
 }
 
