@@ -17,6 +17,10 @@
   margin-bottom: 0.5em;
 }
 
+::ng-deep .cdk-overlay-pane {
+  max-height: 150px !important;
+}
+
 .person-list-item {
   margin-bottom: 1em;
 }
