@@ -54,21 +54,23 @@ export class ItemListComponent extends BaseComponent implements OnInit {
       }
     ).then(({ data: { text } }) => {
       text.split('\n').forEach((line: string) => {
-        const dollarSignIndex = line.indexOf('$');
+        let priceIndex = line.indexOf('$');
 
-        if (dollarSignIndex > 0) {
-          const priceMatches: RegExpMatchArray | null = line.substring(dollarSignIndex).match('[0-9]+(\.[0-9]{2})?');
-          if (priceMatches) {
-            const itemName: string = line.substring(0, dollarSignIndex).trim();
-            const price: number = parseFloat(priceMatches[0]);
+        const priceMatches: RegExpMatchArray | null = line.substring(priceIndex).match('[0-9]*\\.[0-9]{2}[^0-9]*$');
 
-            this.items.set(itemName, {
-              name: itemName,
-              price,
-              people: [],
-              quantity: 0
-            });
-          }
+        if (priceMatches) {
+          const price: number = parseFloat(priceMatches[0]);
+
+          if (priceIndex < 0) priceIndex = line.indexOf(price.toString());
+
+          const itemName: string = line.substring(0, priceIndex).trim();
+
+          this.items.set(itemName, {
+            name: itemName,
+            price,
+            people: [],
+            quantity: 0
+          });
         }
       });
     }).finally(() => this.isProcessingImage = false);
