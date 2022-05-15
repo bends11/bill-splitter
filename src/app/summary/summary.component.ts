@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { ItemService } from '../services/item.service';
 import { Person, PersonService, Purchase } from '../services/person.service';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-summary',
@@ -16,12 +18,87 @@ export class SummaryComponent extends BaseComponent implements OnInit {
   total: number = 0;
   isCalculated: boolean = false;
 
-  constructor(personService: PersonService, itemService: ItemService) {
-    super(personService, itemService);
+  personExpanded: Map<string, boolean> = new Map();
+
+  private formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  })
+
+  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute, private clipboard: Clipboard) {
+    super(personService, itemService, route);
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.setAllPersonExpanded(false);
   }
 
   get peopleList(): Person[] {
     return Array.from(this.people.values());
+  }
+
+  private getPersonDetails(person: Person): string {
+    let ret = '';
+
+    if (this.personExpanded.get(person.name)) {
+      ret += person.name + '\n';
+      this.people.get(person.name)?.purchases.forEach((purchase: Purchase) => {
+        ret += purchase.name + ' x' + purchase.quantity + ': ' + this.formatter.format(purchase.price) + '\n';
+      });
+      ret += 'Subtotal: ' + this.formatter.format(this.calculateSubTotal(person)) + '\n';
+      ret += 'Total: ' + this.formatter.format(this.calculateTotal(person)) + '\n';
+    } else {
+      ret += person.name + ': ' + this.formatter.format(this.calculateTotal(person)) + '\n';
+    }
+
+    return ret + '\n';
+  }
+
+  copy() {
+    let content = '';
+    this.peopleList.forEach((person: Person) => {
+      content += this.getPersonDetails(person);
+    })
+    this.clipboard.copy(content);
+  }
+
+  toggle(personName: string) {
+    this.personExpanded.set(personName, !this.personExpanded.get(personName));
+  }
+
+  canExpandAll() {
+    let canExpand = false;
+
+    Array.from(this.personExpanded.values()).forEach((expanded: boolean) => {
+      if (!expanded) canExpand = true;
+    });
+
+    return canExpand;
+  }
+
+  canCollapseAll() {
+    let canCollapse = false;
+
+    Array.from(this.personExpanded.values()).forEach((expanded: boolean) => {
+      if (expanded) canCollapse = true;
+    });
+
+    return canCollapse;
+  }
+
+  expandAll() {
+    this.setAllPersonExpanded(true);
+  }
+
+  collapseAll() {
+    this.setAllPersonExpanded(false);
+  }
+
+  private setAllPersonExpanded(expanded: boolean) {
+    this.peopleList.forEach((person: Person) => {
+      this.personExpanded.set(person.name, expanded);
+    });
   }
 
   getPurchases(personName: string): Purchase[] {

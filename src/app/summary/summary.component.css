@@ -36,11 +36,15 @@ table {
 }
 
 td {
-  font-size: large;
+  font-size: medium;
 }
 
 .input {
   width: 90%;
+}
+
+.control-button {
+  margin-right: 10px;
 }
 
 #subtotal {
@@ -55,7 +59,6 @@ td {
 .person-summary {
   padding-top: 20px;
 }
-
 
 .person-name {
   font-weight: 600;
