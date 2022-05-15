@@ -25,7 +25,7 @@
   <div id="list" class="content">
     <mat-list>
       <mat-list-item *ngFor="let item of itemList" class="item-list-item">
-        <mat-card class="item-list-item-card" [ngClass]="{ 'incomplete-item': item.people.length === 0 }">
+        <mat-card class="item-list-item-card" [ngClass]="{ 'incomplete-item': item.people.length === 0 || !item.people[0] }">
           <mat-card-content class="item-list-item-content item-name">{{ getLimitedName(item.name, item.price) }}: {{ item.price | currency : 'USD' }}</mat-card-content>
           <button class="item-list-item-content card-button" mat-button (click)="remove(item)">
             <mat-icon class="card-button-icon">close</mat-icon>
