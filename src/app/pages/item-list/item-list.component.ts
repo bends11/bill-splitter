@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
-import { Item, ItemService } from '../services/item.service';
-import { PersonService } from '../services/person.service';
+import { Item, ItemService } from '../../services/item.service';
+import { PersonService } from '../../services/person.service';
 import * as Tesseract from 'tesseract.js';
 
 @Component({
@@ -63,7 +63,7 @@ export class ItemListComponent extends BaseComponent implements OnInit {
 
           if (priceIndex < 0) priceIndex = line.indexOf(price.toString());
 
-          const itemName: string = line.substring(0, priceIndex).trim();
+          const itemName: string = this.disambiguateName(line.substring(0, priceIndex).trim());
 
           this.items.set(itemName, {
             name: itemName,

@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ItemNameTakenComponent } from 'src/app/modals/item-name-taken/item-name-taken.component';
 import { BaseComponent } from '../base/base.component';
-import { Item, ItemService } from '../services/item.service';
-import { Person, PersonService, Purchase } from '../services/person.service';
+import { Item, ItemService } from '../../services/item.service';
+import { Person, PersonService, Purchase } from '../../services/person.service';
 
 interface Share {
   name: string,
@@ -25,7 +27,12 @@ export class AddItemComponent extends BaseComponent implements OnInit {
 
   @ViewChild('shareInput') shareInput!: ElementRef;
 
-  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
+  constructor(personService: PersonService,
+              itemService: ItemService,
+              route: ActivatedRoute,
+              private dialog: MatDialog,
+              private router: Router
+  ) {
     super(personService, itemService, route);
   }
 
@@ -69,6 +76,21 @@ export class AddItemComponent extends BaseComponent implements OnInit {
   }
 
   add(): void {
+    if (this.items.has(this.name)) {
+      this.dialog.open(ItemNameTakenComponent, {
+        data: { name: this.name },
+      }).afterClosed().subscribe((newName: string) => {
+        if (newName && newName.length > 0) {
+          this.name = newName;
+          this.addItem();
+        }
+      })
+    } else {
+      this.addItem();
+    }
+  }
+
+  addItem(): void {
     const price: number = parseFloat(this.price);
     let people: string[];
     let quantity: number = 0;
@@ -109,9 +131,9 @@ export class AddItemComponent extends BaseComponent implements OnInit {
     }
     this.items.set(this.name, item);
 
-    console.log(this.shareInput);
-
     setTimeout(() => this.shareInput.nativeElement.blur());
+
+    this.router.navigate(['/items'])
   }
 
   addShare() {
