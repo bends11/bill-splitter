@@ -12,15 +12,17 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
-import { PersonListComponent } from './person-list/person-list.component';
+import { PersonListComponent } from './pages/person-list/person-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { ItemListComponent } from './item-list/item-list.component';
-import { BaseComponent } from './base/base.component';
-import { AddItemComponent } from './add-item/add-item.component';
-import { SummaryComponent } from './summary/summary.component';
+import { ItemListComponent } from './pages/item-list/item-list.component';
+import { BaseComponent } from './pages/base/base.component';
+import { AddItemComponent } from './pages/add-item/add-item.component';
+import { SummaryComponent } from './pages/summary/summary.component';
+import { ItemNameTakenComponent } from './modals/item-name-taken/item-name-taken.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { SummaryComponent } from './summary/summary.component';
     BaseComponent,
     AddItemComponent,
     SummaryComponent,
+    ItemNameTakenComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { SummaryComponent } from './summary/summary.component';
     FormsModule,
     MatProgressBarModule,
     ClipboardModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

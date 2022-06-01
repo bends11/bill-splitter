@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
-import { Item, ItemService } from '../services/item.service';
-import { PersonService } from '../services/person.service';
+import { Item, ItemService } from '../../services/item.service';
+import { PersonService } from '../../services/person.service';
 import * as Tesseract from 'tesseract.js';
 
 @Component({
@@ -65,8 +65,16 @@ export class ItemListComponent extends BaseComponent implements OnInit {
 
           const itemName: string = line.substring(0, priceIndex).trim();
 
-          this.items.set(itemName, {
-            name: itemName,
+
+          let newName = itemName;
+          let number = 0;
+          while (this.items.has(newName)) {
+            number++;
+            newName = `${itemName} (${number})`;
+          }
+
+          this.items.set(newName, {
+            name: newName,
             price,
             people: [],
             quantity: 0
