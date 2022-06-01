@@ -17,33 +17,33 @@ export class ItemService {
   private itemSubject: Subject<Map<string, Item>> = new BehaviorSubject<Map<string, Item>>(this.items);
 
   constructor() {
-    this.items.set('pizza', {
-      name: 'pizza',
-      price: 1,
-      people: ['Ben'],
-      quantity: 1,
-    });
+    // this.items.set('pizza', {
+    //   name: 'pizza',
+    //   price: 1,
+    //   people: ['Ben'],
+    //   quantity: 1,
+    // });
 
-    this.items.set('hotdog', {
-      name: 'hotdog',
-      price: 2,
-      people: ['Jacob'],
-      quantity: 1,
-    });
+    // this.items.set('hotdog', {
+    //   name: 'hotdog',
+    //   price: 2,
+    //   people: ['Jacob'],
+    //   quantity: 1,
+    // });
 
-    this.items.set('salsa', {
-      name: 'salsa',
-      price: 3,
-      people: ['Ben'],
-      quantity: 1,
-    });
+    // this.items.set('salsa', {
+    //   name: 'salsa',
+    //   price: 3,
+    //   people: ['Ben'],
+    //   quantity: 1,
+    // });
 
-    this.items.set('ice cream', {
-      name: 'ice cream',
-      price: 4,
-      people: ['Jacob'],
-      quantity: 1,
-    });
+    // this.items.set('ice cream', {
+    //   name: 'ice cream',
+    //   price: 4,
+    //   people: ['Jacob'],
+    //   quantity: 1,
+    // });
   }
 
   get items$() {
