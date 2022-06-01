@@ -24,12 +24,12 @@ export class ItemNameTakenComponent extends BaseComponent implements OnInit {
   ) {
     super(personService, itemService, route);
 
-    this.newName = itemService.disambiguateName(data.name);
   }
 
 
   override ngOnInit(): void {
     super.ngOnInit();
+    this.newName = this.disambiguateName(this.data.name);
   }
 
 }

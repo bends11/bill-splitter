@@ -49,15 +49,4 @@ export class ItemService {
   get items$() {
     return this.itemSubject.asObservable();
   }
-
-  public disambiguateName(name: string): string {
-    let newName = name;
-    let number = 0;
-    while (this.items.has(newName)) {
-      number++;
-      newName = `${name} (${number})`;
-    }
-
-    return newName;
-  }
 }

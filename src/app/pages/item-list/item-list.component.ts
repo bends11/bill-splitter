@@ -63,18 +63,10 @@ export class ItemListComponent extends BaseComponent implements OnInit {
 
           if (priceIndex < 0) priceIndex = line.indexOf(price.toString());
 
-          const itemName: string = line.substring(0, priceIndex).trim();
+          const itemName: string = this.disambiguateName(line.substring(0, priceIndex).trim());
 
-
-          let newName = itemName;
-          let number = 0;
-          while (this.items.has(newName)) {
-            number++;
-            newName = `${itemName} (${number})`;
-          }
-
-          this.items.set(newName, {
-            name: newName,
+          this.items.set(itemName, {
+            name: itemName,
             price,
             people: [],
             quantity: 0
