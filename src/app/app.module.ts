@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
@@ -50,6 +51,7 @@ import { ItemNameTakenComponent } from './modals/item-name-taken/item-name-taken
     FormsModule,
     MatProgressBarModule,
     ClipboardModule,
+    MatAutocompleteModule,
     MatDialogModule,
   ],
   providers: [],

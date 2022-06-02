@@ -17,6 +17,10 @@
   margin-bottom: 0.5em;
 }
 
+::ng-deep .mat-autocomplete-panel {
+  max-height: 150px !important;
+}
+
 .person-list-item {
   margin-bottom: 1em;
 }
@@ -30,7 +34,7 @@
   display: inline-flex;
 }
 
-.remove-button {
+.card-button {
   float: right;
 }
 
