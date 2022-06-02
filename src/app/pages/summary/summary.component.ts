@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
-import { ItemService } from '../services/item.service';
-import { Person, PersonService, Purchase } from '../services/person.service';
+import { ItemService } from '../../services/item.service';
+import { Person, PersonService, Purchase } from '../../services/person.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
