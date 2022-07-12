@@ -3,8 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemNameTakenComponent } from 'src/app/modals/item-name-taken/item-name-taken.component';
 import { BaseComponent } from '../base/base.component';
-import { Item, ItemService } from '../../services/item.service';
-import { Person, PersonService, Purchase } from '../../services/person.service';
+import { ItemService } from '../../services/item.service';
+import { PersonService } from '../../services/person.service';
+import { Item } from 'src/app/state/models/item';
+import { Person } from 'src/app/state/models/person';
+import { Purchase } from 'src/app/state/models/purchase';
 
 interface Share {
   name: string,

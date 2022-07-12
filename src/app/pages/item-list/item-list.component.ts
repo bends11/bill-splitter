@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
-import { Item, ItemService } from '../../services/item.service';
+import { ItemService } from '../../services/item.service';
 import { PersonService } from '../../services/person.service';
 import * as Tesseract from 'tesseract.js';
+import { Item } from 'src/app/state/models/item';
 
 @Component({
   selector: 'app-item-list',

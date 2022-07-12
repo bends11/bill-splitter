@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Item, ItemService } from '../../services/item.service';
-import { PersonService, Person } from '../../services/person.service';
+import { Item } from 'src/app/state/models/item';
+import { Person } from 'src/app/state/models/person';
+import { ItemService } from '../../services/item.service';
+import { PersonService } from '../../services/person.service';
 
 @Component({
   selector: 'app-base',
