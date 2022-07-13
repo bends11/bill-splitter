@@ -1,8 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { ItemService } from '../../services/item.service';
-import { PersonService } from '../../services/person.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/state/app.state';
+import { addPerson, removePerson } from 'src/app/state/people/people.actions';
+import { Person } from 'src/app/state/models/person';
 
 @Component({
   selector: 'app-person-list',
@@ -15,8 +18,8 @@ export class PersonListComponent extends BaseComponent implements OnInit {
 
   @ViewChild('input') input!: ElementRef;
 
-  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
-    super(personService, itemService, route);
+  constructor(store: Store<AppState>, route: ActivatedRoute) {
+    super(store, route);
   }
 
   get personNames(): string[] {
@@ -48,7 +51,7 @@ export class PersonListComponent extends BaseComponent implements OnInit {
   }
 
   add(): void {
-    this.people.set(this.person, { name: this.person, purchases: new Map() });
+    this.store.dispatch(addPerson({ person: { name: this.person, purchases: new Map() } }));
     const people: Set<string> = this.getSavedPeople();
     people.add(this.person);
     this.setSavedPeople(people);
@@ -57,8 +60,9 @@ export class PersonListComponent extends BaseComponent implements OnInit {
     setTimeout(() => this.input.nativeElement.focus());
   }
 
-  remove(person: string): void {
-    this.people.delete(person);
+  remove(personName: string): void {
+    const person: Person | undefined = this.people.get(personName);
+    if (person) this.store.dispatch(removePerson({ person: person }));
   }
 
   removeSaved(person: string): void {

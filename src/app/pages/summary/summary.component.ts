@@ -6,6 +6,8 @@ import { PersonService } from '../../services/person.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Person } from 'src/app/state/models/person';
 import { Purchase } from 'src/app/state/models/purchase';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/state/app.state';
 
 @Component({
   selector: 'app-summary',
@@ -27,8 +29,8 @@ export class SummaryComponent extends BaseComponent implements OnInit {
     currency: 'USD',
   })
 
-  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute, private clipboard: Clipboard) {
-    super(personService, itemService, route);
+  constructor(store: Store<AppState>, route: ActivatedRoute, private clipboard: Clipboard) {
+    super(store, route);
   }
 
   override ngOnInit(): void {

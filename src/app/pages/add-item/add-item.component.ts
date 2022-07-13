@@ -3,16 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemNameTakenComponent } from 'src/app/modals/item-name-taken/item-name-taken.component';
 import { BaseComponent } from '../base/base.component';
-import { ItemService } from '../../services/item.service';
-import { PersonService } from '../../services/person.service';
 import { Item } from 'src/app/state/models/item';
-import { Person } from 'src/app/state/models/person';
-import { Purchase } from 'src/app/state/models/purchase';
-
-interface Share {
-  name: string,
-  quantity: number,
-}
+import { Share } from 'src/app/state/models/share';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/state/app.state';
+import { addItem, removeItem } from 'src/app/state/items/items.actions';
 
 @Component({
   selector: 'app-add-item',
@@ -30,13 +25,12 @@ export class AddItemComponent extends BaseComponent implements OnInit {
 
   @ViewChild('shareInput') shareInput!: ElementRef;
 
-  constructor(personService: PersonService,
-              itemService: ItemService,
+  constructor(store: Store<AppState>,
               route: ActivatedRoute,
               private dialog: MatDialog,
               private router: Router
   ) {
-    super(personService, itemService, route);
+    super(store, route);
   }
 
   get personNames(): string[] {
@@ -54,27 +48,8 @@ export class AddItemComponent extends BaseComponent implements OnInit {
       const item: Item | undefined = this.items.get(this.name);
       if (item) {
         this.price = item.price.toString();
-        this.split = item.people.length > 1;
-        if (this.split) {
-          item.people.forEach((personName: string) => {
-            const person: Person | undefined = this.people.get(personName)
-
-            if (person) {
-              this.shares.set(personName, {
-                name: personName,
-                quantity: person.purchases.get(this.name)?.quantity || 0,
-              });
-
-              person.purchases.delete(this.name);
-            }
-          });
-        } else {
-          this.person = item.people[0];
-
-          this.people.get(this.person)?.purchases.delete(this.name);
-        }
-
-        this.items.delete(this.name);
+        this.split = item.shares.size > 1;
+        this.store.dispatch(removeItem({ item: item }));
       }
   }
 
@@ -94,45 +69,13 @@ export class AddItemComponent extends BaseComponent implements OnInit {
   }
 
   addItem(): void {
-    const price: number = parseFloat(this.price);
-    let people: string[];
-    let quantity: number = 0;
-
-    if (this.split) {
-      people = Array.from(this.shares.keys());
-
-      Array.from(this.shares.values()).forEach(share => {
-        quantity += share.quantity;
-      });
-
-      Array.from(this.shares.values()).forEach(share => {
-        const purchase: Purchase = {
-          name: this.name,
-          price: price * (share.quantity / quantity),
-          quantity: share.quantity,
-        }
-
-        this.people.get(share.name)?.purchases.set(this.name, purchase)
-      });
-    }
-    else {
-      people = [ this.person ];
-      quantity = 1;
-
-      const purchase: Purchase = {
+    this.store.dispatch(addItem({
+      item: {
         name: this.name,
-        price: price,
-        quantity: quantity,
+        price: parseFloat(this.price),
+        shares: this.shares,
       }
-      this.people.get(this.person)?.purchases.set(this.name, purchase);
-    }
-    const item: Item = {
-      name: this.name,
-      price: price,
-      people: people,
-      quantity: quantity,
-    }
-    this.items.set(this.name, item);
+    }));
 
     setTimeout(() => this.shareInput.nativeElement.blur());
 
@@ -140,7 +83,10 @@ export class AddItemComponent extends BaseComponent implements OnInit {
   }
 
   addShare() {
-    this.shares.set(this.person, { name: this.person, quantity: parseInt(this.quantity) || 1 });
+    this.shares.set(this.person, {
+      name: this.person,
+      quantity: parseInt(this.quantity) || 1
+    });
     this.person = '';
     this.quantity = '';
   }

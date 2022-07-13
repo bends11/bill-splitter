@@ -24,6 +24,7 @@ import { BaseComponent } from './pages/base/base.component';
 import { AddItemComponent } from './pages/add-item/add-item.component';
 import { SummaryComponent } from './pages/summary/summary.component';
 import { ItemNameTakenComponent } from './modals/item-name-taken/item-name-taken.component';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ItemNameTakenComponent } from './modals/item-name-taken/item-name-taken
     ClipboardModule,
     MatAutocompleteModule,
     MatDialogModule,
+    StoreModule.forRoot({}, {}),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/state/app.state';
+import { selectItems } from 'src/app/state/items/items.selectors';
 import { Item } from 'src/app/state/models/item';
 import { Person } from 'src/app/state/models/person';
-import { ItemService } from '../../services/item.service';
-import { PersonService } from '../../services/person.service';
+import { selectPeople } from 'src/app/state/people/people.selectors';
 
 @Component({
   selector: 'app-base',
@@ -17,16 +19,16 @@ export class BaseComponent implements OnInit {
   protected people: Map<string, Person> = new Map();
   protected items: Map<string, Item> = new Map();
 
-  constructor(private personService: PersonService, private itemService: ItemService, private route: ActivatedRoute) { }
+  constructor(protected store: Store<AppState>, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.personService.people$.subscribe(
+    this.store.select(selectPeople).subscribe(
       people => {
         if (!this.loaded) this.people = people;
       }
     )
 
-    this.itemService.items$.subscribe(
+    this.store.select(selectItems).subscribe(
       items => {
         if (!this.loaded) this.items = items;
       }

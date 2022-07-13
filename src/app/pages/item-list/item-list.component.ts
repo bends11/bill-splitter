@@ -5,6 +5,9 @@ import { ItemService } from '../../services/item.service';
 import { PersonService } from '../../services/person.service';
 import * as Tesseract from 'tesseract.js';
 import { Item } from 'src/app/state/models/item';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/state/app.state';
+import { addItem, removeItem } from 'src/app/state/items/items.actions';
 
 @Component({
   selector: 'app-item-list',
@@ -16,8 +19,8 @@ export class ItemListComponent extends BaseComponent implements OnInit {
   imageProcessProgress: number = 0;
   isProcessingImage: boolean = false;
 
-  constructor(personService: PersonService, itemService: ItemService, route: ActivatedRoute) {
-    super(personService, itemService, route)
+  constructor(store: Store<AppState>, route: ActivatedRoute) {
+    super(store, route)
   }
 
   get itemList(): Item[] {
@@ -25,10 +28,7 @@ export class ItemListComponent extends BaseComponent implements OnInit {
   }
 
   remove(item: Item): void {
-    this.items.delete(item.name);
-    item.people.forEach(person => {
-      this.people.get(person)?.purchases.delete(item.name);
-    });
+    this.store.dispatch(removeItem({ item: item }));
   }
 
   getLimitedName(name: string, price: number) {
@@ -66,12 +66,13 @@ export class ItemListComponent extends BaseComponent implements OnInit {
 
           const itemName: string = this.disambiguateName(line.substring(0, priceIndex).trim());
 
-          this.items.set(itemName, {
-            name: itemName,
-            price,
-            people: [],
-            quantity: 0
-          });
+          this.store.dispatch(addItem({
+            item: {
+              name: itemName,
+              price: price,
+              shares: new Map(),
+            }
+          }));
         }
       });
     }).finally(() => this.isProcessingImage = false);

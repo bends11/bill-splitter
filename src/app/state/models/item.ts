@@ -1,6 +1,7 @@
+import { Share } from "./share";
+
 export interface Item {
   name: string,
   price: number,
-  people: string[],
-  quantity: number,
+  shares: Map<string, Share>,
 }
