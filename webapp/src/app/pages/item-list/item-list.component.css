@@ -1,0 +1,61 @@
+.container {
+  padding-top: 3.5em;
+  padding-bottom: 4em;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  margin-left: 1em;
+  margin-top: 0.5em;
+}
+
+.progress-bar {
+  width: 20em;
+}
+
+.item-list-item {
+  margin-bottom: 1em;
+}
+
+.incomplete-item {
+  background-color: red;
+}
+
+.item-list-item-card {
+  width: 20em;
+  height: 1.5em;
+}
+
+.item-list-item-content {
+  display: inline-flex;
+}
+
+.card-button {
+  float: right;
+  padding: 0px;
+}
+
+.card-button-icon {
+  height: 50px;
+  width: 50px;
+}
+
+.item-name {
+  font-size: small;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  min-height: 4em;
+  bottom: 0px;
+}
+
+.submit-button {
+  width: 100%;
+  font-size: xx-large;
+}
