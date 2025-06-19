@@ -12,96 +12,156 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const tabscannerUrl = "https://api.tabscanner.com/api"
-const tabscannerVersion = "2"
-const tabscannerApiKey = "xz9G0OBXUzsE5BKeN6pF0zG7KNHGtGBn87ORDLVJ19f1j98Qx0CDYaySfQ7Zx35l"
+type tabscannerApi struct {
+	url     string
+	version string
+	key     string
+}
 
-func ProcessReceipt(c *gin.Context) {
-	apiUrl := fmt.Sprintf("%s/%s/process", tabscannerUrl, tabscannerVersion)
+func newTabscannerApi(url string, version string, key string) *tabscannerApi {
+	return &tabscannerApi{
+		url:     url,
+		version: version,
+		key:     key,
+	}
+}
 
-	receipt, _ := c.FormFile("receipt")
+func (api tabscannerApi) getResultUrl(token string) string {
+	return fmt.Sprintf("%s/result/%s", api.url, token)
+}
 
-	file, err := receipt.Open()
-	if err != nil {
-		//TODO
-		log.Fatalf("Failed to Open File: %v", err)
+func (api tabscannerApi) getProcessUrl() string {
+	return fmt.Sprintf("%s/%s/process", api.url, api.version)
+}
+
+var api tabscannerApi
+
+func InitTabscannerApi(url string, version string, key string) {
+	api = *newTabscannerApi(url, version, key)
+}
+
+func ProcessReceipt(gctx *gin.Context) {
+	file, fileName, err := getFormFile(gctx, "receipt")
+
+	if file == nil {
+		abort(gctx, fmt.Sprintf("Failed to get file from form or File is empty: %v", err))
 	}
 	defer file.Close()
 
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	part, err := writer.CreateFormFile("file", receipt.Filename)
 	if err != nil {
-		//TODO
-		log.Fatalf("Failed to Create Form Data: %v", err)
+		abort(gctx, fmt.Sprintf("Failed to get file from form: %v", err))
 	}
 
-	io.Copy(part, file)
+	body, contentType, err := createFileBody("file", file, fileName)
 	if err != nil {
-		//TODO
-		log.Fatalf("Failed to Copy file: %v", err)
+		abort(gctx, fmt.Sprintf("Failed to create form body: %v", err))
 	}
 
-	writer.Close()
+	response, err := post(api.getProcessUrl(), body, contentType)
 
-	req, err := http.NewRequest("POST", apiUrl, body)
 	if err != nil {
-		//TODO
-		log.Fatalf("Failed to Create Request: %v", err)
+		abort(gctx, fmt.Sprintf("Failed get response: %v", err))
 	}
 
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-	req.Header.Set("apikey", tabscannerApiKey)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatalf("Failed to call tabscanner: %v", err)
-	}
-	defer resp.Body.Close()
-
-	bodyBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalf("Error reading response body: %v", err)
-	}
-	bodyString := string(bodyBytes)
-
-	var response any
-
-	json.Unmarshal([]byte(bodyString), &response)
-
-	c.JSON(http.StatusCreated, response)
+	gctx.JSON(http.StatusCreated, response)
 }
 
-func GetResult(c *gin.Context) {
-	apiUrl := fmt.Sprintf("%s/result/%s", tabscannerUrl, c.Param("token"))
+func GetResult(gctx *gin.Context) {
+	response, err := get(api.getResultUrl(gctx.Param("token")))
 
-	req, err := http.NewRequest("GET", apiUrl, nil)
 	if err != nil {
-		//TODO
-		log.Fatalf("Failed to Create Request: %v", err)
+		abort(gctx, fmt.Sprintf("Failed get response: %v", err))
 	}
 
-	req.Header.Set("apikey", tabscannerApiKey)
+	gctx.JSON(http.StatusCreated, response)
 
+}
+
+func abort(gctx *gin.Context, errorMessage string) {
+	log.Print(errorMessage)
+	gctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": errorMessage})
+}
+
+func getFormFile(gctx *gin.Context, formFieldName string) (multipart.File, string, error) {
+	fileHeder, err := gctx.FormFile(formFieldName)
+	if err != nil {
+		return nil, "", err
+	}
+
+	file, err := fileHeder.Open()
+	if err != nil {
+		return nil, "", err
+	}
+
+	return file, fileHeder.Filename, nil
+}
+
+func createFileBody(formFieldName string, file multipart.File, fileName string) (*bytes.Buffer, string, error) {
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	defer writer.Close()
+
+	part, err := writer.CreateFormFile(formFieldName, fileName)
+	if err != nil {
+		return nil, "", err
+	}
+
+	_, err = io.Copy(part, file)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return body, writer.FormDataContentType(), nil
+}
+
+func post(apiUrl string, body *bytes.Buffer, contentType string) (any, error) {
+	req, err := http.NewRequest("POST", apiUrl, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", contentType)
+	req.Header.Set("apikey", api.key)
+
+	return doHttpRequest(req)
+}
+
+func get(apiUrl string) (any, error) {
+	req, err := http.NewRequest("GET", apiUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("apikey", api.key)
+
+	return doHttpRequest(req)
+}
+
+func doHttpRequest(req *http.Request) (any, error) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatalf("Failed to call tabscanner: %v", err)
+
+	if resp == nil || resp.Body == nil {
+		return nil, fmt.Errorf("could not get response from api")
 	}
 	defer resp.Body.Close()
 
+	if err != nil {
+		return nil, err
+	}
+
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalf("Error reading response body: %v", err)
+		return nil, err
 	}
 	bodyString := string(bodyBytes)
 
 	var response any
 
-	json.Unmarshal([]byte(bodyString), &response)
+	err = json.Unmarshal([]byte(bodyString), &response)
+	if err != nil {
+		return nil, err
+	}
 
-	c.JSON(http.StatusCreated, response)
-
+	return response, nil
 }
