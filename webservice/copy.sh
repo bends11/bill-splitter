@@ -1,0 +1,1 @@
+scp -i "~/.ssh/bill-splitter-ec2.pem" ./bin/main ec2-user@api.bill-spliiter.com:~/webservice/

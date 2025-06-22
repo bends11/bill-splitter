@@ -42,9 +42,9 @@ func initFlags() *bool {
 
 func runGinServer(local bool) {
 	r := gin.Default()
-	if local {
-		r.Use(cors.Default())
-	}
+
+	r.Use(cors.Default())
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
