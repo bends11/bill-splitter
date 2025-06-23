@@ -90,7 +90,7 @@ func getFormFile(gctx *gin.Context, formFieldName string) (multipart.File, strin
 
 	file, err := fileHeder.Open()
 	if err != nil {
-		return nil, "", err
+		return file, "", err
 	}
 
 	return file, fileHeder.Filename, nil
