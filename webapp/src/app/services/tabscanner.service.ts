@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TabscannerService {
 
-  private apiUrl: string = 'https://api.bill-spliiter.com/tabscanner';
+  private apiUrl: string = `${environment.webserviceBaseUrl}/tabscanner`;
 
   constructor(private http: HttpClient) { }
 
