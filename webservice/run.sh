@@ -1,0 +1,1 @@
+go run main.go --tabscannerUrl https://api.tabscanner.com/api --tabscannerVersion 2 --tabscannerApiKey "$TABSCANNER_API_KEY" --local true
