@@ -14,6 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { PersonListComponent } from './pages/person-list/person-list.component';
@@ -24,6 +25,8 @@ import { BaseComponent } from './pages/base/base.component';
 import { AddItemComponent } from './pages/add-item/add-item.component';
 import { SummaryComponent } from './pages/summary/summary.component';
 import { ItemNameTakenComponent } from './modals/item-name-taken/item-name-taken.component';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,8 @@ import { ItemNameTakenComponent } from './modals/item-name-taken/item-name-taken
     ClipboardModule,
     MatAutocompleteModule,
     MatDialogModule,
+    HttpClientModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
