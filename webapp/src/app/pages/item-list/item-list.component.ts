@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { Item, ItemService } from '../../services/item.service';
 import { PersonService } from '../../services/person.service';
 import * as Tesseract from 'tesseract.js';
 import { TabscannerService } from 'src/app/services/tabscanner.service';
-import { delay, of, repeat, skipWhile, switchMap, take } from 'rxjs';
+import { catchError, delay, of, repeat, skipWhile, switchMap, take } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-item-list',
@@ -17,7 +18,7 @@ export class ItemListComponent extends BaseComponent implements OnInit {
   imageProcessProgress: number = 0;
   isProcessingImage: boolean = false;
 
-  constructor(personService: PersonService, itemService: ItemService, private tabScannerService: TabscannerService, route: ActivatedRoute) {
+  constructor(personService: PersonService, itemService: ItemService, private tabScannerService: TabscannerService, route: ActivatedRoute, private snackBar: MatSnackBar) {
     super(personService, itemService, route)
   }
 
@@ -41,7 +42,6 @@ export class ItemListComponent extends BaseComponent implements OnInit {
   }
 
   onImageSelected(event: any) {
-    //this.processImageLocally(event.target.files[0]);
     this.processReceipt(event.target.files[0]);
   }
 
@@ -49,9 +49,13 @@ export class ItemListComponent extends BaseComponent implements OnInit {
     this.isProcessingImage = true;
 
     this.tabScannerService.processReceipt(receipt).pipe(
+      catchError(err => of(err)),
       switchMap((processResponse: any) => {
-        if (processResponse.status === 'success') {
+        if (processResponse?.error) return of(processResponse);
+
+        if (processResponse?.status === 'success') {
           return this.tabScannerService.getResult(processResponse.token).pipe(
+            catchError(err => of(err)),
             delay(1000),
             repeat(60),
             skipWhile((resultResponse: any) => resultResponse.status !== 'done'),
@@ -59,17 +63,22 @@ export class ItemListComponent extends BaseComponent implements OnInit {
           );
         }
 
-        return of(null)
-      })
+        return of(processResponse);
+      }),
     ).subscribe((response: any) => {
-      if (response !== null) {
+      if (response?.result?.lineItems) {
         response.result.lineItems.filter((item: any) => item.lineTotal > 0).forEach((item: any) => {
           this.addItem(item.desc, item.lineTotal);
         });
+      } else {
+        console.log(response);
+        this.snackBar.open("Error processing receipt", "Close", {
+          duration: 5000
+        })
       }
 
       this.isProcessingImage = false;
-    })
+    });
   }
 
   private processImageLocally(image: File) {
