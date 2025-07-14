@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class TabscannerService {
 
-  private apiUrl: string = `${environment.webserviceBaseUrl}/tabscanner`;
+  private apiUrl: string = `${environment.webserviceBaseUrl}/api/tabscanner`;
 
   constructor(private http: HttpClient) { }
 

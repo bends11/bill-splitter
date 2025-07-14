@@ -45,12 +45,12 @@ func runGinServer(local bool) {
 
 	r.Use(cors.Default())
 
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET("/api/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
-	r.POST("/tabscanner/process", tabscanner.ProcessReceipt)
-	r.GET("/tabscanner/result/:token", tabscanner.GetResult)
+	r.POST("/api/tabscanner/process", tabscanner.ProcessReceipt)
+	r.GET("/api/tabscanner/result/:token", tabscanner.GetResult)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
